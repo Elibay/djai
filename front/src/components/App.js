@@ -6,8 +6,15 @@ class App extends React.Component {
     super(props);
     this.state = {
       error: null, 
-      value: ""
-    }
+      value: "",
+      to: "",
+      id: "5e1afd9f725d340f00c16863"
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({to: event.target.value})
   }
   componentDidMount() {
     fetch("http://localhost:8080/5e1afd9f725d340f00c16863/")
@@ -25,6 +32,19 @@ class App extends React.Component {
           }
       )
   }
+  handleSubmit = event => {
+    event.preventDefault()
+    let json = JSON.stringify({value:this.state.to, id:this.state.id});
+    fetch("http://localhost:8080", {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: json, 
+    })
+    .then(res => res.json())
+    .then(
+        window.location.reload(false)
+    )
+  };
   render() {
     const { error, value } = this.state;
     if (error) {
@@ -33,10 +53,13 @@ class App extends React.Component {
       return (
         <div className="divka">
           <div>
-            <div className="divka2">
-              {value}
-            </div>
-            <button className="button">
+            <div className="wrap">
+              <h1>{value}</h1>
+              </div>
+              <form onSubmit={this.handleSubmit} className="form__group" id="123">
+                <input type="text" className="form__input" value={this.state.to} onChange={this.handleChange} />
+              </form>
+            <button className="button" onClick={this.handleSubmit}>
               Update
             </button>
           </div>

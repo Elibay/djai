@@ -30,6 +30,7 @@ public class MessageController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<?> addorUpdate(@RequestBody Doc doc) {
         service.saveOrUpdate(doc);
